@@ -1,0 +1,36 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_media/application/auth/auth_bloc/auth_bloc.dart';
+import 'package:social_media/presentation/core/router/router.gr.dart';
+
+class SplashPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        state.map(
+          initial: (_) {
+            print('initial');
+          },
+          authenticated: (_) {
+            print('authenticated');
+            // return ExtendedNavigator.of(context)
+            //     .pushReplacementNamed(Routes.infoPage);
+            // return ExtendedNavigator.of(context)
+            // .pushReplacementNamed(Routes.signInPage);
+          },
+          unauthenticated: (_) {
+            print('un');
+            return ExtendedNavigator.of(context)
+                .pushReplacementNamed(Routes.signInPage);
+          },
+        );
+      },
+      child: Scaffold(
+          body: Center(
+        child: CircularProgressIndicator(),
+      )),
+    );
+  }
+}
