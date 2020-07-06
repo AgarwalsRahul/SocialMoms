@@ -15,8 +15,8 @@ class SplashPage extends StatelessWidget {
           },
           authenticated: (_) {
             print('authenticated');
-            // return ExtendedNavigator.of(context)
-            //     .pushReplacementNamed(Routes.infoPage);
+            return ExtendedNavigator.of(context)
+                .pushReplacementNamed(Routes.homePage);
             // return ExtendedNavigator.of(context)
             // .pushReplacementNamed(Routes.signInPage);
           },

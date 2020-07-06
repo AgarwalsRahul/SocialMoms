@@ -14,3 +14,5 @@ class UnexpectedValueError extends Error {
 }
 
 class NotAuthenticatedError extends Error {}
+
+class UnexpectedError extends Error {}

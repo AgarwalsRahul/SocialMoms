@@ -16,4 +16,5 @@ extension FirestoreX on Firestore {
 
 extension DocumentReferenceX on DocumentReference {
   CollectionReference get infoCollection => collection('info');
+  CollectionReference get postCollection => collection('posts');
 }

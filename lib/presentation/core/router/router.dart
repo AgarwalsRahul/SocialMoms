@@ -1,4 +1,7 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:social_media/presentation/core/homepage.dart';
+import 'package:social_media/presentation/forum/comment_screen.dart';
+import 'package:social_media/presentation/forum/post_page.dart';
 import 'package:social_media/presentation/info/info_page.dart';
 import 'package:social_media/presentation/sign_in/sign_in_page.dart';
 import 'package:social_media/presentation/sign_in/splash/splash_page.dart';
@@ -11,4 +14,7 @@ class $Router {
   SplashPage splashPage;
   SignInPage signInPage;
   InfoPage infoPage;
+  HomePage homePage;
+  PostPage postPage;
+  CommentsScreen commentsScreen;
 }
