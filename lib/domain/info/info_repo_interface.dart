@@ -1,10 +1,9 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:social_media/domain/auth/user.dart';
-import 'package:social_media/domain/info/info.dart';
-import 'package:social_media/domain/info/info_failure.dart';
+
+import 'info.dart';
+import 'info_failure.dart';
 
 abstract class InfoRepoInterface {
   Future<Either<InfoFailure, Unit>> create(UserInfo info);

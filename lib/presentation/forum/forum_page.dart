@@ -132,11 +132,11 @@ class _AllForumsState extends State<AllForums> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _controller.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _controller.close();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

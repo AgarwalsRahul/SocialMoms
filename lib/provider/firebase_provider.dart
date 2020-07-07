@@ -4,6 +4,7 @@ import 'package:social_media/domain/auth/auth_facade.dart';
 import 'package:social_media/domain/core/errors.dart';
 import 'package:social_media/domain/core/value_objects.dart';
 import 'package:social_media/domain/info/info_repo_interface.dart';
+import 'package:social_media/domain/info/value_object.dart';
 import 'package:social_media/infrastructure/info/info_dtos.dart';
 // import 'package:social_media/domain/info/info.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
@@ -131,5 +132,43 @@ class FirebaseProvider {
         await reference.collection("likes").document(id).get();
     print('DOC ID : ${snapshot.reference.path}');
     return snapshot.exists;
+  }
+
+  Stream<List<u.UserInfo>> fetchAroundMeUsersInfo() async* {
+    final currentUser = await getUserInfo();
+    final userOption = await getIt<AuthFacade>().getSignedInUser();
+    final user = userOption.getOrElse(() => throw NotAuthenticatedError());
+    print(user.id.getOrCrash());
+    print(currentUser.id.getOrCrash());
+    final ids = await _firestore.collection('users').getDocuments().then(
+        (snapshot) => snapshot.documents
+            .where((doc) => doc.documentID != user.id.getOrCrash())
+            .toList());
+    print(ids);
+    for (var i = 0; i < ids.length; i++) {
+      print(ids[i].documentID);
+      yield* ids[i].reference.collection('info').snapshots().map((snap) => snap
+          .documents
+          .where((docSnap) =>
+              docSnap.data['city'].toLowerCase() ==
+              currentUser.city.getOrCrash().toLowerCase())
+          .map((info) => InfoDTO.fromFirestore(info).toDomain())
+          .toList());
+    }
+
+    // final userinfo = ids
+    //     .map((e) => e.reference.collection('info').snapshots().map((snap) =>
+    //         snap.documents
+    //             .map((info) => InfoDTO.fromFirestore(info).toDomain())
+    //             .toList()))
+    //     .toList();
+
+    // .map((snapshot) => snapshot
+    //     .documents
+    //     .where((doc) => doc.documentID != id)
+    //     .map((e) => e.reference.collection('info').snapshots().map((snap) =>
+    //         snap.documents
+    //             .map((info) => InfoDTO.fromFirestore(info).toDomain())
+    //             .toList())));
   }
 }

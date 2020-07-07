@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media/application/info/info_bloc.dart';
 import 'package:social_media/infrastructure/core/media_service.dart';
+import 'package:social_media/presentation/core/router/router.gr.dart';
 
 import 'image_selector.dart';
 
@@ -39,7 +41,9 @@ class _InfoFormState extends State<InfoForm> {
               ),
               leftBarIndicatorColor: Colors.red[300],
             )..show(context);
-          }, (r) => null),
+          },
+              (r) => ExtendedNavigator.of(context)
+                  .pushReplacementNamed(Routes.homePage)),
         );
       },
       builder: (context, state) {

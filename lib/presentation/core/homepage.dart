@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:social_media/presentation/around_me/around_me_page.dart';
 import 'package:social_media/presentation/forum/forum_page.dart';
+import 'package:social_media/provider/firebase_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -45,9 +47,9 @@ class _HomePageState extends State<HomePage> {
           Container(
               // color: Colors.white,
               ),
-          Container(
-              // color: Colors.white,
-              ),
+          AroundMePage(
+            provider: FirebaseProvider(),
+          ),
           Container(
               // color: Colors.white,
               ),

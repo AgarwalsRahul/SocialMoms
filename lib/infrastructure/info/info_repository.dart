@@ -93,13 +93,15 @@ class InfoRepository implements InfoRepoInterface {
           .getOrElse(() => throw NotAuthenticatedError())
           .id
           .getOrCrash();
-      return right(await FirebaseStorage.instance
+      final imageFile = await FirebaseStorage.instance
           .ref()
           .child('profileImages')
           .child(uid)
           .putFile(image)
-          .onComplete
-          .then((value) => value.ref.getDownloadURL().toString()));
+          .onComplete;
+      final imageUrl = await imageFile.ref.getDownloadURL();
+      print(imageUrl);
+      return right(imageUrl);
     } on PlatformException catch (_) {
       return left(InfoFailure.unexpected());
     }

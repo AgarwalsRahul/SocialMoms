@@ -15,6 +15,8 @@ import 'package:social_media/presentation/forum/post_page.dart';
 import 'package:social_media/presentation/forum/comment_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:social_media/domain/info/info.dart';
+import 'package:social_media/presentation/around_me/around_me_page.dart';
+import 'package:social_media/provider/firebase_provider.dart';
 
 abstract class Routes {
   static const splashPage = '/';
@@ -23,6 +25,7 @@ abstract class Routes {
   static const homePage = '/home-page';
   static const postPage = '/post-page';
   static const commentsScreen = '/comments-screen';
+  static const aroundMePage = '/around-me-page';
   static const all = {
     splashPage,
     signInPage,
@@ -30,6 +33,7 @@ abstract class Routes {
     homePage,
     postPage,
     commentsScreen,
+    aroundMePage,
   };
 }
 
@@ -82,6 +86,17 @@ class Router extends RouterBase {
               user: typedArgs.user),
           settings: settings,
         );
+      case Routes.aroundMePage:
+        if (hasInvalidArgs<AroundMePageArguments>(args)) {
+          return misTypedArgsRoute<AroundMePageArguments>(args);
+        }
+        final typedArgs =
+            args as AroundMePageArguments ?? AroundMePageArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (context) =>
+              AroundMePage(key: typedArgs.key, provider: typedArgs.provider),
+          settings: settings,
+        );
       default:
         return unknownRoutePage(settings.name);
     }
@@ -97,6 +112,13 @@ class CommentsScreenArguments {
   final DocumentReference documentReference;
   final UserInfo user;
   CommentsScreenArguments({this.documentReference, this.user});
+}
+
+//AroundMePage arguments holder class
+class AroundMePageArguments {
+  final Key key;
+  final FirebaseProvider provider;
+  AroundMePageArguments({this.key, this.provider});
 }
 
 // *************************************************************************
@@ -122,5 +144,14 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
         Routes.commentsScreen,
         arguments: CommentsScreenArguments(
             documentReference: documentReference, user: user),
+      );
+
+  Future pushAroundMePage({
+    Key key,
+    FirebaseProvider provider,
+  }) =>
+      pushNamed(
+        Routes.aroundMePage,
+        arguments: AroundMePageArguments(key: key, provider: provider),
       );
 }
