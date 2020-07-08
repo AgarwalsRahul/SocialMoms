@@ -1,19 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_media/domain/auth/auth_facade.dart';
 import 'package:social_media/domain/core/errors.dart';
 import 'package:social_media/domain/core/value_objects.dart';
-import 'package:social_media/domain/info/info_repo_interface.dart';
-import 'package:social_media/domain/info/value_object.dart';
 import 'package:social_media/infrastructure/info/info_dtos.dart';
-// import 'package:social_media/domain/info/info.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
-import '../infrastructure/core/firestore_helpers.dart';
 import 'package:social_media/infrastructure/models/comment.dart';
 import 'package:social_media/infrastructure/models/like.dart';
 import 'package:social_media/infrastructure/models/post.dart';
 import 'package:social_media/injection.dart';
+
 import '../domain/info/info.dart' as u;
+import '../infrastructure/core/firestore_helpers.dart';
 
 class FirebaseProvider {
   // final FirebaseAuth _auth = getIt<FirebaseAuth>();
@@ -134,41 +130,77 @@ class FirebaseProvider {
     return snapshot.exists;
   }
 
-  Stream<List<u.UserInfo>> fetchAroundMeUsersInfo() async* {
+  Future<List<u.UserInfo>> fetchAroundMeUsersInfo() async {
     final currentUser = await getUserInfo();
     final userOption = await getIt<AuthFacade>().getSignedInUser();
     final user = userOption.getOrElse(() => throw NotAuthenticatedError());
-    print(user.id.getOrCrash());
-    print(currentUser.id.getOrCrash());
-    final ids = await _firestore.collection('users').getDocuments().then(
-        (snapshot) => snapshot.documents
-            .where((doc) => doc.documentID != user.id.getOrCrash())
-            .toList());
-    print(ids);
+    // print(user.id.getOrCrash());
+    final userDocuments = await _firestore.collection('users').getDocuments();
+
+    final ids = userDocuments.documents
+        .where((doc) => doc.documentID != user.id.getOrCrash())
+        .toList();
+    // print(ids);
+    final List<u.UserInfo> list = [];
+    // print(ids);
     for (var i = 0; i < ids.length; i++) {
-      print(ids[i].documentID);
-      yield* ids[i].reference.collection('info').snapshots().map((snap) => snap
-          .documents
-          .where((docSnap) =>
-              docSnap.data['city'].toLowerCase() ==
+      final userInfoDoc =
+          await ids[i].reference.collection('info').getDocuments();
+      print(userInfoDoc);
+      list.add(userInfoDoc.documents
+          .where((doc) =>
+              doc.data['city'].toLowerCase() ==
               currentUser.city.getOrCrash().toLowerCase())
-          .map((info) => InfoDTO.fromFirestore(info).toDomain())
-          .toList());
+          .map((docSnap) => InfoDTO.fromFirestore(docSnap).toDomain())
+          .toList()[0]);
     }
+    print(list);
+    return list;
+  }
 
-    // final userinfo = ids
-    //     .map((e) => e.reference.collection('info').snapshots().map((snap) =>
-    //         snap.documents
-    //             .map((info) => InfoDTO.fromFirestore(info).toDomain())
-    //             .toList()))
-    //     .toList();
+  Future<List<u.UserInfo>> fetchAllUsers() async {
+    final userOption = await getIt<AuthFacade>().getSignedInUser();
+    final user = userOption.getOrElse(() => throw NotAuthenticatedError());
+    // print(user.id.getOrCrash());
+    final userDocuments = await _firestore.collection('users').getDocuments();
 
-    // .map((snapshot) => snapshot
-    //     .documents
-    //     .where((doc) => doc.documentID != id)
-    //     .map((e) => e.reference.collection('info').snapshots().map((snap) =>
-    //         snap.documents
-    //             .map((info) => InfoDTO.fromFirestore(info).toDomain())
-    //             .toList())));
+    final ids = userDocuments.documents
+        .where((doc) => doc.documentID != user.id.getOrCrash())
+        .toList();
+    final List<u.UserInfo> list = [];
+    // print(ids);
+    for (var i = 0; i < ids.length; i++) {
+      final userInfoDoc =
+          await ids[i].reference.collection('info').getDocuments();
+      print(userInfoDoc);
+      list.add(userInfoDoc.documents
+          .map((docSnap) => InfoDTO.fromFirestore(docSnap).toDomain())
+          .toList()[0]);
+    }
+    return list;
+  }
+
+  Future<List<u.UserInfo>> fetchExpertUsers() async {
+    final userOption = await getIt<AuthFacade>().getSignedInUser();
+    final user = userOption.getOrElse(() => throw NotAuthenticatedError());
+    // print(user.id.getOrCrash());
+    final userDocuments = await _firestore.collection('users').getDocuments();
+
+    final ids = userDocuments.documents
+        .where((doc) => doc.documentID != user.id.getOrCrash())
+        .toList();
+    // print(ids);
+    final List<u.UserInfo> list = [];
+    // print(ids);
+    for (var i = 0; i < ids.length; i++) {
+      final userInfoDoc =
+          await ids[i].reference.collection('info').getDocuments();
+      print(userInfoDoc);
+      list.add(userInfoDoc.documents
+          .where((doc) => doc.data['expertOrNot'] == true)
+          .map((docSnap) => InfoDTO.fromFirestore(docSnap).toDomain())
+          .toList()[0]);
+    }
+    return list;
   }
 }

@@ -16,7 +16,8 @@ import 'package:social_media/presentation/forum/comment_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:social_media/domain/info/info.dart';
 import 'package:social_media/presentation/around_me/around_me_page.dart';
-import 'package:social_media/provider/firebase_provider.dart';
+import 'dart:async';
+import 'package:social_media/presentation/around_me/profile_page.dart';
 
 abstract class Routes {
   static const splashPage = '/';
@@ -26,6 +27,7 @@ abstract class Routes {
   static const postPage = '/post-page';
   static const commentsScreen = '/comments-screen';
   static const aroundMePage = '/around-me-page';
+  static const profilePage = '/profile-page';
   static const all = {
     splashPage,
     signInPage,
@@ -34,6 +36,7 @@ abstract class Routes {
     postPage,
     commentsScreen,
     aroundMePage,
+    profilePage,
   };
 }
 
@@ -93,8 +96,21 @@ class Router extends RouterBase {
         final typedArgs =
             args as AroundMePageArguments ?? AroundMePageArguments();
         return MaterialPageRoute<dynamic>(
+          builder: (context) => AroundMePage(
+              key: typedArgs.key,
+              future: typedArgs.future,
+              appBar: typedArgs.appBar),
+          settings: settings,
+        );
+      case Routes.profilePage:
+        if (hasInvalidArgs<ProfilePageArguments>(args)) {
+          return misTypedArgsRoute<ProfilePageArguments>(args);
+        }
+        final typedArgs =
+            args as ProfilePageArguments ?? ProfilePageArguments();
+        return MaterialPageRoute<dynamic>(
           builder: (context) =>
-              AroundMePage(key: typedArgs.key, provider: typedArgs.provider),
+              ProfilePage(key: typedArgs.key, userInfo: typedArgs.userInfo),
           settings: settings,
         );
       default:
@@ -117,8 +133,16 @@ class CommentsScreenArguments {
 //AroundMePage arguments holder class
 class AroundMePageArguments {
   final Key key;
-  final FirebaseProvider provider;
-  AroundMePageArguments({this.key, this.provider});
+  final Future<List<UserInfo>> future;
+  final bool appBar;
+  AroundMePageArguments({this.key, this.future, this.appBar});
+}
+
+//ProfilePage arguments holder class
+class ProfilePageArguments {
+  final Key key;
+  final UserInfo userInfo;
+  ProfilePageArguments({this.key, this.userInfo});
 }
 
 // *************************************************************************
@@ -148,10 +172,21 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
 
   Future pushAroundMePage({
     Key key,
-    FirebaseProvider provider,
+    Future<List<UserInfo>> future,
+    bool appBar,
   }) =>
       pushNamed(
         Routes.aroundMePage,
-        arguments: AroundMePageArguments(key: key, provider: provider),
+        arguments:
+            AroundMePageArguments(key: key, future: future, appBar: appBar),
+      );
+
+  Future pushProfilePage({
+    Key key,
+    UserInfo userInfo,
+  }) =>
+      pushNamed(
+        Routes.profilePage,
+        arguments: ProfilePageArguments(key: key, userInfo: userInfo),
       );
 }

@@ -6,14 +6,10 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:social_media/infrastructure/models/post.dart';
-import 'package:social_media/presentation/core/router/router.gr.dart';
-import 'package:social_media/presentation/forum/comment_screen.dart';
-import 'package:social_media/presentation/forum/post_page.dart';
-import 'package:social_media/provider/firebase_provider.dart';
-
-import 'girl_talk_forum.dart';
-import 'relationship_forum.dart';
+import '../../infrastructure/models/post.dart';
+import '../../provider/firebase_provider.dart';
+import 'comment_screen.dart';
+import 'post_page.dart';
 
 class ForumPage extends StatefulWidget {
   @override

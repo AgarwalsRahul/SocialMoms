@@ -1,20 +1,20 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
-import 'package:social_media/domain/auth/auth_facade.dart';
-import 'package:social_media/domain/core/errors.dart';
-import 'package:social_media/domain/info/info_failure.dart';
-import 'package:social_media/domain/info/info.dart';
-import 'package:dartz/dartz.dart';
-import 'package:social_media/domain/info/info_repo_interface.dart';
-import 'package:social_media/infrastructure/core/media_service.dart';
-import 'package:social_media/infrastructure/info/info_dtos.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '../../domain/auth/auth_facade.dart';
+import '../../domain/core/errors.dart';
+import '../../domain/info/info.dart';
+import '../../domain/info/info_failure.dart';
+import '../../domain/info/info_repo_interface.dart';
 import '../../injection.dart';
 import '../core/firestore_helpers.dart';
-import 'package:rxdart/rxdart.dart';
+import 'info_dtos.dart';
 
 @LazySingleton(as: InfoRepoInterface)
 class InfoRepository implements InfoRepoInterface {
@@ -28,6 +28,9 @@ class InfoRepository implements InfoRepoInterface {
     try {
       final userDoc = await _firestore.userDocument();
       final infoDTO = InfoDTO.fromDomain(info);
+      await userDoc.setData({
+        'city': infoDTO.city.toLowerCase(),
+      });
       await userDoc.infoCollection
           .document(infoDTO.id)
           .setData(infoDTO.toJson());

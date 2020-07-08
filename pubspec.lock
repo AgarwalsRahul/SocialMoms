@@ -281,6 +281,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.11"
+  flare_dart:
+    dependency: transitive
+    description:
+      name: flare_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.4"
+  flare_flutter:
+    dependency: transitive
+    description:
+      name: flare_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.5"
   flushbar:
     dependency: "direct main"
     description:
@@ -616,6 +630,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slimy_card:
+    dependency: "direct main"
+    description:
+      name: slimy_card
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   source_gen:
     dependency: transitive
     description:

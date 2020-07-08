@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_media/presentation/around_me/around_me_page.dart';
 import 'package:social_media/presentation/forum/forum_page.dart';
+import 'package:social_media/presentation/moms/moms.dart';
 import 'package:social_media/provider/firebase_provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -48,14 +49,13 @@ class _HomePageState extends State<HomePage> {
               // color: Colors.white,
               ),
           AroundMePage(
-            provider: FirebaseProvider(),
+            future: FirebaseProvider().fetchAroundMeUsersInfo(),
+            appBar: true,
           ),
           Container(
               // color: Colors.white,
               ),
-          Container(
-              // color: Colors.white,
-              ),
+          Moms(),
         ],
       ),
       // floatingActionButton: FloatingActionButton(

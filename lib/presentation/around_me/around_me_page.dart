@@ -1,81 +1,106 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media/domain/info/info.dart';
-import 'package:social_media/provider/firebase_provider.dart';
+
+import '../../domain/info/info.dart';
+import '../../provider/firebase_provider.dart';
+import 'profile_page.dart';
 
 class AroundMePage extends StatelessWidget {
-  final FirebaseProvider provider;
+  final Future<List<UserInfo>> future;
+  final bool appBar;
 
-  const AroundMePage({Key key, this.provider}) : super(key: key);
+  AroundMePage({
+    Key key,
+    this.future,
+    this.appBar,
+  }) : super(key: key);
+
+  final appbar = AppBar(
+    centerTitle: true,
+    title: Text('Around Me'),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Around Me'),
-      ),
-      body: StreamBuilder<List<UserInfo>>(
-          stream: provider.fetchAroundMeUsersInfo(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Flushbar(
-                message: snapshot.error.toString(),
-                duration: Duration(seconds: 3),
-                backgroundColor: Colors.black,
-                icon: Icon(
-                  Icons.warning,
-                  size: 28.0,
-                  color: Colors.red[300],
-                ),
-                leftBarIndicatorColor: Colors.red[300],
-              )..show(context);
-            } else {
-              if (snapshot.data.length <= 0 || snapshot.data == null) {
+      appBar: appBar ? appbar : null,
+      body: RefreshIndicator(
+        onRefresh: () => future,
+        child: FutureBuilder<List<UserInfo>>(
+            future: future,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
-                  child: Text(
-                    'No users yet !',
-                    style: TextStyle(fontSize: 20),
-                  ),
+                  child: CircularProgressIndicator(),
                 );
-              }
-              return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 3 / 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemBuilder: (context, i) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: GridTile(
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: FadeInImage(
-                          placeholder:
-                              AssetImage('assets/images/placeholder.png'),
-                          image: NetworkImage(snapshot.data[i].imageUrl),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      footer: GridTileBar(
-                        backgroundColor: Theme.of(context).accentColor,
-                        title: Text(
-                          snapshot.data[i].userName.getOrCrash(),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+              } else if (snapshot.hasError) {
+                return Flushbar(
+                  message: snapshot.error.toString(),
+                  duration: Duration(seconds: 3),
+                  backgroundColor: Colors.black,
+                  icon: Icon(
+                    Icons.warning,
+                    size: 28.0,
+                    color: Colors.red[300],
+                  ),
+                  leftBarIndicatorColor: Colors.red[300],
+                )..show(context);
+              } else {
+                if (snapshot.data.length <= 0 || !snapshot.hasData) {
+                  return Center(
+                    child: Text(
+                      'No users yet !',
+                      style: TextStyle(fontSize: 20),
                     ),
                   );
-                },
-                itemCount: snapshot.data.length,
-              );
-            }
-          }),
+                }
+                return GridView.builder(
+                  padding: EdgeInsets.all(10.0),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.8,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                  ),
+                  itemBuilder: (context, i) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: GridTile(
+                        child: GestureDetector(
+                          onTap: () {
+                            ExtendedNavigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return ProfilePage(userInfo: snapshot.data[i]);
+                            }));
+                          },
+                          child: FadeInImage(
+                            placeholder:
+                                AssetImage('assets/images/placeholder.png'),
+                            image: NetworkImage(snapshot.data[i].imageUrl == ''
+                                ? 'https://cdn0.iconfinder.com/data/icons/occupation-002/64/programmer-programming-occupation-avatar-512.png'
+                                : snapshot.data[i].imageUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        footer: GridTileBar(
+                          backgroundColor: Theme.of(context).accentColor,
+                          title: Text(
+                            snapshot.data[i].userName.getOrCrash(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: snapshot.data.length,
+                );
+              }
+            }),
+      ),
     );
   }
 }
