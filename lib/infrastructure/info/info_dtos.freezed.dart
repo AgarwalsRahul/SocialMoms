@@ -18,6 +18,7 @@ class _$InfoDTOTearOff {
   _InfoDTO call(
       {@JsonKey(ignore: true) String id,
       @required String userName,
+      @required String userID,
       @required int age,
       @required String shortBio,
       @required String city,
@@ -26,6 +27,7 @@ class _$InfoDTOTearOff {
     return _InfoDTO(
       id: id,
       userName: userName,
+      userID: userID,
       age: age,
       shortBio: shortBio,
       city: city,
@@ -42,6 +44,7 @@ mixin _$InfoDTO {
   @JsonKey(ignore: true)
   String get id;
   String get userName;
+  String get userID;
   int get age;
   String get shortBio;
   String get city;
@@ -58,6 +61,7 @@ abstract class $InfoDTOCopyWith<$Res> {
   $Res call(
       {@JsonKey(ignore: true) String id,
       String userName,
+      String userID,
       int age,
       String shortBio,
       String city,
@@ -76,6 +80,7 @@ class _$InfoDTOCopyWithImpl<$Res> implements $InfoDTOCopyWith<$Res> {
   $Res call({
     Object id = freezed,
     Object userName = freezed,
+    Object userID = freezed,
     Object age = freezed,
     Object shortBio = freezed,
     Object city = freezed,
@@ -85,6 +90,7 @@ class _$InfoDTOCopyWithImpl<$Res> implements $InfoDTOCopyWith<$Res> {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String,
       userName: userName == freezed ? _value.userName : userName as String,
+      userID: userID == freezed ? _value.userID : userID as String,
       age: age == freezed ? _value.age : age as int,
       shortBio: shortBio == freezed ? _value.shortBio : shortBio as String,
       city: city == freezed ? _value.city : city as String,
@@ -102,6 +108,7 @@ abstract class _$InfoDTOCopyWith<$Res> implements $InfoDTOCopyWith<$Res> {
   $Res call(
       {@JsonKey(ignore: true) String id,
       String userName,
+      String userID,
       int age,
       String shortBio,
       String city,
@@ -121,6 +128,7 @@ class __$InfoDTOCopyWithImpl<$Res> extends _$InfoDTOCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object userName = freezed,
+    Object userID = freezed,
     Object age = freezed,
     Object shortBio = freezed,
     Object city = freezed,
@@ -130,6 +138,7 @@ class __$InfoDTOCopyWithImpl<$Res> extends _$InfoDTOCopyWithImpl<$Res>
     return _then(_InfoDTO(
       id: id == freezed ? _value.id : id as String,
       userName: userName == freezed ? _value.userName : userName as String,
+      userID: userID == freezed ? _value.userID : userID as String,
       age: age == freezed ? _value.age : age as int,
       shortBio: shortBio == freezed ? _value.shortBio : shortBio as String,
       city: city == freezed ? _value.city : city as String,
@@ -145,12 +154,14 @@ class _$_InfoDTO extends _InfoDTO {
   const _$_InfoDTO(
       {@JsonKey(ignore: true) this.id,
       @required this.userName,
+      @required this.userID,
       @required this.age,
       @required this.shortBio,
       @required this.city,
       @required this.expertOrNot,
       @required this.imageUrl})
       : assert(userName != null),
+        assert(userID != null),
         assert(age != null),
         assert(shortBio != null),
         assert(city != null),
@@ -167,6 +178,8 @@ class _$_InfoDTO extends _InfoDTO {
   @override
   final String userName;
   @override
+  final String userID;
+  @override
   final int age;
   @override
   final String shortBio;
@@ -179,7 +192,7 @@ class _$_InfoDTO extends _InfoDTO {
 
   @override
   String toString() {
-    return 'InfoDTO(id: $id, userName: $userName, age: $age, shortBio: $shortBio, city: $city, expertOrNot: $expertOrNot, imageUrl: $imageUrl)';
+    return 'InfoDTO(id: $id, userName: $userName, userID: $userID, age: $age, shortBio: $shortBio, city: $city, expertOrNot: $expertOrNot, imageUrl: $imageUrl)';
   }
 
   @override
@@ -191,6 +204,8 @@ class _$_InfoDTO extends _InfoDTO {
             (identical(other.userName, userName) ||
                 const DeepCollectionEquality()
                     .equals(other.userName, userName)) &&
+            (identical(other.userID, userID) ||
+                const DeepCollectionEquality().equals(other.userID, userID)) &&
             (identical(other.age, age) ||
                 const DeepCollectionEquality().equals(other.age, age)) &&
             (identical(other.shortBio, shortBio) ||
@@ -211,6 +226,7 @@ class _$_InfoDTO extends _InfoDTO {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(userName) ^
+      const DeepCollectionEquality().hash(userID) ^
       const DeepCollectionEquality().hash(age) ^
       const DeepCollectionEquality().hash(shortBio) ^
       const DeepCollectionEquality().hash(city) ^
@@ -232,6 +248,7 @@ abstract class _InfoDTO extends InfoDTO {
   const factory _InfoDTO(
       {@JsonKey(ignore: true) String id,
       @required String userName,
+      @required String userID,
       @required int age,
       @required String shortBio,
       @required String city,
@@ -245,6 +262,8 @@ abstract class _InfoDTO extends InfoDTO {
   String get id;
   @override
   String get userName;
+  @override
+  String get userID;
   @override
   int get age;
   @override

@@ -7,15 +7,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media/application/info/info_bloc.dart';
 import 'package:social_media/infrastructure/core/media_service.dart';
 import 'package:social_media/presentation/core/router/router.gr.dart';
+import 'package:social_media/presentation/info/widget/image_selector.dart';
 
-import 'image_selector.dart';
+// import 'image_selector.dart';
 
-class InfoForm extends StatefulWidget {
+class UserProfileForm extends StatefulWidget {
   @override
-  _InfoFormState createState() => _InfoFormState();
+  _UserProfileFormState createState() => _UserProfileFormState();
 }
 
-class _InfoFormState extends State<InfoForm> {
+class _UserProfileFormState extends State<UserProfileForm> {
   double _deviceHeight;
 
   File _image;
@@ -56,9 +57,10 @@ class _InfoFormState extends State<InfoForm> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                _imageSelector(context),
+                _imageSelector(context, state),
                 TextFormField(
-                  initialValue: state.isEditing ? 'Rahul' : '',
+                  initialValue:
+                      state.isEditing ? state.info.userName.getOrCrash() : '',
                   decoration: const InputDecoration(
                     labelText: 'Full Name',
                   ),
@@ -83,6 +85,9 @@ class _InfoFormState extends State<InfoForm> {
                   },
                 ),
                 TextFormField(
+                  initialValue: state.isEditing
+                      ? state.info.age.getOrCrash().toString()
+                      : '',
                   decoration: const InputDecoration(
                     labelText: 'Age',
                   ),
@@ -104,6 +109,7 @@ class _InfoFormState extends State<InfoForm> {
                   },
                 ),
                 TextFormField(
+                  initialValue: state.info.city.getOrCrash(),
                   decoration: const InputDecoration(
                     labelText: 'City',
                   ),
@@ -123,6 +129,7 @@ class _InfoFormState extends State<InfoForm> {
                   },
                 ),
                 TextFormField(
+                  initialValue: state.info.shortBio.getOrCrash(),
                   decoration: const InputDecoration(
                     labelText: 'Short Bio',
                   ),
@@ -188,15 +195,16 @@ class _InfoFormState extends State<InfoForm> {
     );
   }
 
-  Widget _imageSelector(BuildContext context) {
+  Widget _imageSelector(BuildContext context, InfoState state) {
     return ImageSelector(
       borderRadius: 100,
       height: _deviceHeight * 0.20,
       width: _deviceHeight * 0.20,
       image: DecorationImage(
           image: _image == null
-              ? NetworkImage(
-                  'https://cdn0.iconfinder.com/data/icons/occupation-002/64/programmer-programming-occupation-avatar-512.png')
+              ? NetworkImage(state.info.imageUrl == ''
+                  ? 'https://cdn0.iconfinder.com/data/icons/occupation-002/64/programmer-programming-occupation-avatar-512.png'
+                  : state.info.imageUrl)
               : FileImage(
                   _image,
                 ),

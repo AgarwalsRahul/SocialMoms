@@ -29,10 +29,10 @@ class InfoRepository implements InfoRepoInterface {
       final userDoc = await _firestore.userDocument();
       final infoDTO = InfoDTO.fromDomain(info);
       await userDoc.setData({
-        'city': infoDTO.city.toLowerCase(),
+        'cities': infoDTO.city.toLowerCase(),
       });
       await userDoc.infoCollection
-          .document(infoDTO.id)
+          .document(infoDTO.userID)
           .setData(infoDTO.toJson());
 
       return right(unit);
@@ -69,7 +69,7 @@ class InfoRepository implements InfoRepoInterface {
       final userDoc = await _firestore.userDocument();
       final infoDTO = InfoDTO.fromDomain(info);
       await userDoc.infoCollection
-          .document(infoDTO.id)
+          .document(infoDTO.userID)
           .updateData(infoDTO.toJson());
 
       return right(unit);

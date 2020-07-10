@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:social_media/presentation/around_me/around_me_page.dart';
-import 'package:social_media/presentation/forum/forum_page.dart';
-import 'package:social_media/presentation/moms/moms.dart';
-import 'package:social_media/provider/firebase_provider.dart';
+
+import '../../provider/firebase_provider.dart';
+import '../around_me/around_me_page.dart';
+import '../chats/recent_chats.dart';
+import '../forum/forum_page.dart';
+import '../moms/moms.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -45,9 +47,7 @@ class _HomePageState extends State<HomePage> {
         physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
           ForumPage(),
-          Container(
-              // color: Colors.white,
-              ),
+          RecentChats(),
           AroundMePage(
             future: FirebaseProvider().fetchAroundMeUsersInfo(),
             appBar: true,

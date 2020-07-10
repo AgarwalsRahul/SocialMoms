@@ -14,6 +14,7 @@ class _$UserInfoTearOff {
 
   _UserInfo call(
       {@required UniqueId id,
+      @required String userID,
       @required UserName userName,
       @required Age age,
       @required City city,
@@ -22,6 +23,7 @@ class _$UserInfoTearOff {
       @required String imageUrl}) {
     return _UserInfo(
       id: id,
+      userID: userID,
       userName: userName,
       age: age,
       city: city,
@@ -37,6 +39,7 @@ const $UserInfo = _$UserInfoTearOff();
 
 mixin _$UserInfo {
   UniqueId get id;
+  String get userID;
   UserName get userName;
   Age get age;
   City get city;
@@ -52,6 +55,7 @@ abstract class $UserInfoCopyWith<$Res> {
       _$UserInfoCopyWithImpl<$Res>;
   $Res call(
       {UniqueId id,
+      String userID,
       UserName userName,
       Age age,
       City city,
@@ -70,6 +74,7 @@ class _$UserInfoCopyWithImpl<$Res> implements $UserInfoCopyWith<$Res> {
   @override
   $Res call({
     Object id = freezed,
+    Object userID = freezed,
     Object userName = freezed,
     Object age = freezed,
     Object city = freezed,
@@ -79,6 +84,7 @@ class _$UserInfoCopyWithImpl<$Res> implements $UserInfoCopyWith<$Res> {
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as UniqueId,
+      userID: userID == freezed ? _value.userID : userID as String,
       userName: userName == freezed ? _value.userName : userName as UserName,
       age: age == freezed ? _value.age : age as Age,
       city: city == freezed ? _value.city : city as City,
@@ -96,6 +102,7 @@ abstract class _$UserInfoCopyWith<$Res> implements $UserInfoCopyWith<$Res> {
   @override
   $Res call(
       {UniqueId id,
+      String userID,
       UserName userName,
       Age age,
       City city,
@@ -115,6 +122,7 @@ class __$UserInfoCopyWithImpl<$Res> extends _$UserInfoCopyWithImpl<$Res>
   @override
   $Res call({
     Object id = freezed,
+    Object userID = freezed,
     Object userName = freezed,
     Object age = freezed,
     Object city = freezed,
@@ -124,6 +132,7 @@ class __$UserInfoCopyWithImpl<$Res> extends _$UserInfoCopyWithImpl<$Res>
   }) {
     return _then(_UserInfo(
       id: id == freezed ? _value.id : id as UniqueId,
+      userID: userID == freezed ? _value.userID : userID as String,
       userName: userName == freezed ? _value.userName : userName as UserName,
       age: age == freezed ? _value.age : age as Age,
       city: city == freezed ? _value.city : city as City,
@@ -138,6 +147,7 @@ class __$UserInfoCopyWithImpl<$Res> extends _$UserInfoCopyWithImpl<$Res>
 class _$_UserInfo extends _UserInfo {
   const _$_UserInfo(
       {@required this.id,
+      @required this.userID,
       @required this.userName,
       @required this.age,
       @required this.city,
@@ -145,6 +155,7 @@ class _$_UserInfo extends _UserInfo {
       @required this.expertOrNot,
       @required this.imageUrl})
       : assert(id != null),
+        assert(userID != null),
         assert(userName != null),
         assert(age != null),
         assert(city != null),
@@ -155,6 +166,8 @@ class _$_UserInfo extends _UserInfo {
 
   @override
   final UniqueId id;
+  @override
+  final String userID;
   @override
   final UserName userName;
   @override
@@ -170,7 +183,7 @@ class _$_UserInfo extends _UserInfo {
 
   @override
   String toString() {
-    return 'UserInfo(id: $id, userName: $userName, age: $age, city: $city, shortBio: $shortBio, expertOrNot: $expertOrNot, imageUrl: $imageUrl)';
+    return 'UserInfo(id: $id, userID: $userID, userName: $userName, age: $age, city: $city, shortBio: $shortBio, expertOrNot: $expertOrNot, imageUrl: $imageUrl)';
   }
 
   @override
@@ -179,6 +192,8 @@ class _$_UserInfo extends _UserInfo {
         (other is _UserInfo &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.userID, userID) ||
+                const DeepCollectionEquality().equals(other.userID, userID)) &&
             (identical(other.userName, userName) ||
                 const DeepCollectionEquality()
                     .equals(other.userName, userName)) &&
@@ -201,6 +216,7 @@ class _$_UserInfo extends _UserInfo {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(userID) ^
       const DeepCollectionEquality().hash(userName) ^
       const DeepCollectionEquality().hash(age) ^
       const DeepCollectionEquality().hash(city) ^
@@ -217,6 +233,7 @@ abstract class _UserInfo extends UserInfo {
   const _UserInfo._() : super._();
   const factory _UserInfo(
       {@required UniqueId id,
+      @required String userID,
       @required UserName userName,
       @required Age age,
       @required City city,
@@ -226,6 +243,8 @@ abstract class _UserInfo extends UserInfo {
 
   @override
   UniqueId get id;
+  @override
+  String get userID;
   @override
   UserName get userName;
   @override

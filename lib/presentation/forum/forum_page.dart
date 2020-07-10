@@ -4,12 +4,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../application/info/info_bloc.dart';
+import '../../domain/info/info.dart';
 import '../../infrastructure/models/post.dart';
 import '../../provider/firebase_provider.dart';
 import 'comment_screen.dart';
 import 'post_page.dart';
+import 'user_profile_page.dart';
 
 class ForumPage extends StatefulWidget {
   @override
@@ -39,6 +43,24 @@ class _ForumPageState extends State<ForumPage>
       appBar: AppBar(
         title: Text('Forum'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.person_outline,
+              color: Colors.black,
+              size: 30.0,
+            ),
+            onPressed: () async {
+              final UserInfo userInfo = await _provider.getUserInfo();
+              context.bloc<InfoBloc>().add(InfoEvent.initialized(userInfo));
+              // context.bloc<InfoBloc>().add(InfoEvent.initialized(userInfo));
+              // print(state.isEditing);
+              ExtendedNavigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => UserProfilePage(userInfo: userInfo)));
+            },
+            color: Colors.black,
+          ),
+        ],
         bottom: TabBar(
             indicatorWeight: 3.0,
             indicatorColor: Theme.of(context).accentColor,

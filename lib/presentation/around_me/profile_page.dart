@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:slimy_card/slimy_card.dart';
 import 'package:social_media/domain/info/info.dart';
+import 'package:social_media/infrastructure/chats/db_service.dart';
+import 'package:social_media/presentation/chats/conversation_page.dart';
 
 class ProfilePage extends StatelessWidget {
   final UserInfo userInfo;
@@ -90,7 +92,21 @@ class ProfilePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 )),
             FlatButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final currentUserId =
+                      await DBService.instance.currentUserId();
+                  await DBService.instance.createOrGetConversations(
+                      userInfo.userID,
+                      (_conversationID) =>
+                          ExtendedNavigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ConversationPage(
+                                    conversationID: _conversationID,
+                                    currentUserID: currentUserId,
+                                    image: userInfo.imageUrl,
+                                    name: userInfo.userName.getOrCrash(),
+                                    id: userInfo.userID,
+                                  ))));
+                },
                 child: Text(
                   'SAY HI',
                   style: TextStyle(

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:social_media/domain/core/failures.dart';
-import 'package:social_media/domain/core/value_objects.dart';
-import 'package:social_media/domain/info/value_object.dart';
-// import 'package:social_media/domain/registration/value_object.dart';
+
+import '../core/failures.dart';
+import '../core/value_objects.dart';
+import 'value_object.dart';
 
 part 'info.freezed.dart';
 
@@ -12,6 +12,7 @@ abstract class UserInfo implements _$UserInfo {
   const UserInfo._();
   const factory UserInfo({
     @required UniqueId id,
+    @required String userID,
     @required UserName userName,
     @required Age age,
     @required City city,
@@ -22,6 +23,7 @@ abstract class UserInfo implements _$UserInfo {
 
   factory UserInfo.empty() {
     return UserInfo(
+      userID: '',
       id: UniqueId(),
       userName: UserName(''),
       age: Age(0),

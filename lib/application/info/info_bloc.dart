@@ -7,6 +7,9 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media/domain/auth/auth_facade.dart';
+import 'package:social_media/domain/core/errors.dart';
+import 'package:social_media/injection.dart';
 
 import '../../domain/info/info.dart';
 import '../../domain/info/info_failure.dart';
@@ -28,6 +31,11 @@ class InfoBloc extends Bloc<InfoEvent, InfoState> {
     InfoEvent event,
   ) async* {
     yield* event.map(submitted: (e) async* {
+      final currentUser = await getIt<AuthFacade>().getSignedInUser();
+      final userid = currentUser
+          .getOrElse(() => throw NotAuthenticatedError())
+          .id
+          .getOrCrash();
       Either<InfoFailure, Unit> failureOrSuccess;
       yield state.copyWith(
         isSaving: true,
@@ -36,8 +44,8 @@ class InfoBloc extends Bloc<InfoEvent, InfoState> {
       if (state.info.failureOption.isNone() &&
           state.imageFailureOrSuccess.isNone()) {
         failureOrSuccess = state.isEditing
-            ? await _repoInterface.update(state.info)
-            : await _repoInterface.create(state.info);
+            ? await _repoInterface.update(state.info.copyWith(userID: userid))
+            : await _repoInterface.create(state.info.copyWith(userID: userid));
       }
       yield state.copyWith(
         isSaving: false,
@@ -73,12 +81,9 @@ class InfoBloc extends Bloc<InfoEvent, InfoState> {
         infoFailureOrSuccess: none(),
       );
     }, initialized: (e) async* {
-      e.info.fold(
-        () => state,
-        (initialInfo) => state.copyWith(
-          info: initialInfo,
-          isEditing: true,
-        ),
+      yield state.copyWith(
+        info: e.info,
+        isEditing: true,
       );
     }, imageUploaded: (e) async* {
       final Either<InfoFailure, String> failureOrImageUrl =

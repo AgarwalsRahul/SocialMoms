@@ -13,6 +13,7 @@ abstract class InfoDTO implements _$InfoDTO {
   const factory InfoDTO(
       {@JsonKey(ignore: true) String id,
       @required String userName,
+      @required String userID,
       @required int age,
       @required String shortBio,
       @required String city,
@@ -27,6 +28,7 @@ abstract class InfoDTO implements _$InfoDTO {
 
   factory InfoDTO.fromDomain(UserInfo info) {
     return InfoDTO(
+        userID: info.userID,
         imageUrl: info.imageUrl,
         id: info.id.getOrCrash(),
         userName: info.userName.getOrCrash(),
@@ -38,6 +40,7 @@ abstract class InfoDTO implements _$InfoDTO {
 
   UserInfo toDomain() {
     return UserInfo(
+        userID: userID,
         id: UniqueId.fromUniqueString(id),
         userName: UserName(userName),
         age: Age(age),

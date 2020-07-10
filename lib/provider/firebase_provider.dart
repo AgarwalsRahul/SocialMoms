@@ -131,28 +131,37 @@ class FirebaseProvider {
   }
 
   Future<List<u.UserInfo>> fetchAroundMeUsersInfo() async {
-    final currentUser = await getUserInfo();
     final userOption = await getIt<AuthFacade>().getSignedInUser();
     final user = userOption.getOrElse(() => throw NotAuthenticatedError());
+    final userData = await _firestore
+        .collection('users')
+        .document(user.id.getOrCrash())
+        .get();
+    final city = userData.data['cities'];
     // print(user.id.getOrCrash());
     final userDocuments = await _firestore.collection('users').getDocuments();
 
     final ids = userDocuments.documents
         .where((doc) => doc.documentID != user.id.getOrCrash())
         .toList();
-    // print(ids);
+    print(ids[0].data['cities']);
+    // print(ids[0].data['city']);
+    final filterIds =
+        ids.where((element) => element.data['cities'] == city).toList();
     final List<u.UserInfo> list = [];
-    // print(ids);
-    for (var i = 0; i < ids.length; i++) {
-      final userInfoDoc =
-          await ids[i].reference.collection('info').getDocuments();
-      print(userInfoDoc);
-      list.add(userInfoDoc.documents
-          .where((doc) =>
-              doc.data['city'].toLowerCase() ==
-              currentUser.city.getOrCrash().toLowerCase())
-          .map((docSnap) => InfoDTO.fromFirestore(docSnap).toDomain())
-          .toList()[0]);
+    print(filterIds);
+    for (var i = 0; i < filterIds.length; i++) {
+      final userInfoDoc = await filterIds[i]
+          .reference
+          .collection('info')
+          .document(filterIds[i].documentID)
+          .get();
+
+      final userInfo = InfoDTO.fromFirestore(userInfoDoc).toDomain();
+
+      if (userInfo != null) {
+        list.add(userInfo);
+      }
     }
     print(list);
     return list;

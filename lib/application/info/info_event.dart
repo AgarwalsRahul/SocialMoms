@@ -7,7 +7,7 @@ abstract class InfoEvent with _$InfoEvent {
   const factory InfoEvent.ageChanged(int age) = _AgeChanged;
   const factory InfoEvent.bioChanged(String bio) = _BioChanged;
   const factory InfoEvent.cityChanged(String city) = _CityChanged;
-  const factory InfoEvent.initialized(Option<UserInfo> info) = _Initialized;
+  const factory InfoEvent.initialized(UserInfo info) = _Initialized;
   const factory InfoEvent.imageUploaded(File image) = _ImageUploaded;
   const factory InfoEvent.expertStatusChanged(bool status) =
       _ExpertStatusChanged;

@@ -42,17 +42,17 @@ class SignInForm extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Align(
-                  child: Image(
-                    image: const AssetImage('assets/images/notepad.png'),
-                    alignment: Alignment.center,
-                    fit: BoxFit.cover,
-                    height: _deviceHeight * 0.3,
-                  ),
-                ),
+                // Align(
+                //   child: Image(
+                //     image: const AssetImage('assets/images/notepad.png'),
+                //     alignment: Alignment.center,
+                //     fit: BoxFit.cover,
+                //     height: _deviceHeight * 0.3,
+                //   ),
+                // ),
                 SizedBox(height: _deviceHeight * 0.03),
                 TextFormField(
                   decoration: const InputDecoration(

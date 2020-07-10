@@ -40,7 +40,7 @@ class _$InfoEventTearOff {
     );
   }
 
-  _Initialized initialized(Option<UserInfo> info) {
+  _Initialized initialized(UserInfo info) {
     return _Initialized(
       info,
     );
@@ -70,7 +70,7 @@ mixin _$InfoEvent {
     @required Result ageChanged(int age),
     @required Result bioChanged(String bio),
     @required Result cityChanged(String city),
-    @required Result initialized(Option<UserInfo> info),
+    @required Result initialized(UserInfo info),
     @required Result imageUploaded(File image),
     @required Result expertStatusChanged(bool status),
   });
@@ -81,7 +81,7 @@ mixin _$InfoEvent {
     Result ageChanged(int age),
     Result bioChanged(String bio),
     Result cityChanged(String city),
-    Result initialized(Option<UserInfo> info),
+    Result initialized(UserInfo info),
     Result imageUploaded(File image),
     Result expertStatusChanged(bool status),
     @required Result orElse(),
@@ -169,7 +169,7 @@ class _$_Submitted with DiagnosticableTreeMixin implements _Submitted {
     @required Result ageChanged(int age),
     @required Result bioChanged(String bio),
     @required Result cityChanged(String city),
-    @required Result initialized(Option<UserInfo> info),
+    @required Result initialized(UserInfo info),
     @required Result imageUploaded(File image),
     @required Result expertStatusChanged(bool status),
   }) {
@@ -192,7 +192,7 @@ class _$_Submitted with DiagnosticableTreeMixin implements _Submitted {
     Result ageChanged(int age),
     Result bioChanged(String bio),
     Result cityChanged(String city),
-    Result initialized(Option<UserInfo> info),
+    Result initialized(UserInfo info),
     Result imageUploaded(File image),
     Result expertStatusChanged(bool status),
     @required Result orElse(),
@@ -321,7 +321,7 @@ class _$_NameChanged with DiagnosticableTreeMixin implements _NameChanged {
     @required Result ageChanged(int age),
     @required Result bioChanged(String bio),
     @required Result cityChanged(String city),
-    @required Result initialized(Option<UserInfo> info),
+    @required Result initialized(UserInfo info),
     @required Result imageUploaded(File image),
     @required Result expertStatusChanged(bool status),
   }) {
@@ -344,7 +344,7 @@ class _$_NameChanged with DiagnosticableTreeMixin implements _NameChanged {
     Result ageChanged(int age),
     Result bioChanged(String bio),
     Result cityChanged(String city),
-    Result initialized(Option<UserInfo> info),
+    Result initialized(UserInfo info),
     Result imageUploaded(File image),
     Result expertStatusChanged(bool status),
     @required Result orElse(),
@@ -476,7 +476,7 @@ class _$_AgeChanged with DiagnosticableTreeMixin implements _AgeChanged {
     @required Result ageChanged(int age),
     @required Result bioChanged(String bio),
     @required Result cityChanged(String city),
-    @required Result initialized(Option<UserInfo> info),
+    @required Result initialized(UserInfo info),
     @required Result imageUploaded(File image),
     @required Result expertStatusChanged(bool status),
   }) {
@@ -499,7 +499,7 @@ class _$_AgeChanged with DiagnosticableTreeMixin implements _AgeChanged {
     Result ageChanged(int age),
     Result bioChanged(String bio),
     Result cityChanged(String city),
-    Result initialized(Option<UserInfo> info),
+    Result initialized(UserInfo info),
     Result imageUploaded(File image),
     Result expertStatusChanged(bool status),
     @required Result orElse(),
@@ -631,7 +631,7 @@ class _$_BioChanged with DiagnosticableTreeMixin implements _BioChanged {
     @required Result ageChanged(int age),
     @required Result bioChanged(String bio),
     @required Result cityChanged(String city),
-    @required Result initialized(Option<UserInfo> info),
+    @required Result initialized(UserInfo info),
     @required Result imageUploaded(File image),
     @required Result expertStatusChanged(bool status),
   }) {
@@ -654,7 +654,7 @@ class _$_BioChanged with DiagnosticableTreeMixin implements _BioChanged {
     Result ageChanged(int age),
     Result bioChanged(String bio),
     Result cityChanged(String city),
-    Result initialized(Option<UserInfo> info),
+    Result initialized(UserInfo info),
     Result imageUploaded(File image),
     Result expertStatusChanged(bool status),
     @required Result orElse(),
@@ -786,7 +786,7 @@ class _$_CityChanged with DiagnosticableTreeMixin implements _CityChanged {
     @required Result ageChanged(int age),
     @required Result bioChanged(String bio),
     @required Result cityChanged(String city),
-    @required Result initialized(Option<UserInfo> info),
+    @required Result initialized(UserInfo info),
     @required Result imageUploaded(File image),
     @required Result expertStatusChanged(bool status),
   }) {
@@ -809,7 +809,7 @@ class _$_CityChanged with DiagnosticableTreeMixin implements _CityChanged {
     Result ageChanged(int age),
     Result bioChanged(String bio),
     Result cityChanged(String city),
-    Result initialized(Option<UserInfo> info),
+    Result initialized(UserInfo info),
     Result imageUploaded(File image),
     Result expertStatusChanged(bool status),
     @required Result orElse(),
@@ -876,7 +876,9 @@ abstract class _$InitializedCopyWith<$Res> {
   factory _$InitializedCopyWith(
           _Initialized value, $Res Function(_Initialized) then) =
       __$InitializedCopyWithImpl<$Res>;
-  $Res call({Option<UserInfo> info});
+  $Res call({UserInfo info});
+
+  $UserInfoCopyWith<$Res> get info;
 }
 
 class __$InitializedCopyWithImpl<$Res> extends _$InfoEventCopyWithImpl<$Res>
@@ -893,8 +895,18 @@ class __$InitializedCopyWithImpl<$Res> extends _$InfoEventCopyWithImpl<$Res>
     Object info = freezed,
   }) {
     return _then(_Initialized(
-      info == freezed ? _value.info : info as Option<UserInfo>,
+      info == freezed ? _value.info : info as UserInfo,
     ));
+  }
+
+  @override
+  $UserInfoCopyWith<$Res> get info {
+    if (_value.info == null) {
+      return null;
+    }
+    return $UserInfoCopyWith<$Res>(_value.info, (value) {
+      return _then(_value.copyWith(info: value));
+    });
   }
 }
 
@@ -902,7 +914,7 @@ class _$_Initialized with DiagnosticableTreeMixin implements _Initialized {
   const _$_Initialized(this.info) : assert(info != null);
 
   @override
-  final Option<UserInfo> info;
+  final UserInfo info;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -941,7 +953,7 @@ class _$_Initialized with DiagnosticableTreeMixin implements _Initialized {
     @required Result ageChanged(int age),
     @required Result bioChanged(String bio),
     @required Result cityChanged(String city),
-    @required Result initialized(Option<UserInfo> info),
+    @required Result initialized(UserInfo info),
     @required Result imageUploaded(File image),
     @required Result expertStatusChanged(bool status),
   }) {
@@ -964,7 +976,7 @@ class _$_Initialized with DiagnosticableTreeMixin implements _Initialized {
     Result ageChanged(int age),
     Result bioChanged(String bio),
     Result cityChanged(String city),
-    Result initialized(Option<UserInfo> info),
+    Result initialized(UserInfo info),
     Result imageUploaded(File image),
     Result expertStatusChanged(bool status),
     @required Result orElse(),
@@ -1021,9 +1033,9 @@ class _$_Initialized with DiagnosticableTreeMixin implements _Initialized {
 }
 
 abstract class _Initialized implements InfoEvent {
-  const factory _Initialized(Option<UserInfo> info) = _$_Initialized;
+  const factory _Initialized(UserInfo info) = _$_Initialized;
 
-  Option<UserInfo> get info;
+  UserInfo get info;
   _$InitializedCopyWith<_Initialized> get copyWith;
 }
 
@@ -1096,7 +1108,7 @@ class _$_ImageUploaded with DiagnosticableTreeMixin implements _ImageUploaded {
     @required Result ageChanged(int age),
     @required Result bioChanged(String bio),
     @required Result cityChanged(String city),
-    @required Result initialized(Option<UserInfo> info),
+    @required Result initialized(UserInfo info),
     @required Result imageUploaded(File image),
     @required Result expertStatusChanged(bool status),
   }) {
@@ -1119,7 +1131,7 @@ class _$_ImageUploaded with DiagnosticableTreeMixin implements _ImageUploaded {
     Result ageChanged(int age),
     Result bioChanged(String bio),
     Result cityChanged(String city),
-    Result initialized(Option<UserInfo> info),
+    Result initialized(UserInfo info),
     Result imageUploaded(File image),
     Result expertStatusChanged(bool status),
     @required Result orElse(),
@@ -1255,7 +1267,7 @@ class _$_ExpertStatusChanged
     @required Result ageChanged(int age),
     @required Result bioChanged(String bio),
     @required Result cityChanged(String city),
-    @required Result initialized(Option<UserInfo> info),
+    @required Result initialized(UserInfo info),
     @required Result imageUploaded(File image),
     @required Result expertStatusChanged(bool status),
   }) {
@@ -1278,7 +1290,7 @@ class _$_ExpertStatusChanged
     Result ageChanged(int age),
     Result bioChanged(String bio),
     Result cityChanged(String city),
-    Result initialized(Option<UserInfo> info),
+    Result initialized(UserInfo info),
     Result imageUploaded(File image),
     Result expertStatusChanged(bool status),
     @required Result orElse(),

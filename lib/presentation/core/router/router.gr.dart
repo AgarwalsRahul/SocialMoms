@@ -18,6 +18,8 @@ import 'package:social_media/domain/info/info.dart';
 import 'package:social_media/presentation/around_me/around_me_page.dart';
 import 'dart:async';
 import 'package:social_media/presentation/around_me/profile_page.dart';
+import 'package:social_media/presentation/chats/conversation_page.dart';
+import 'package:social_media/presentation/info/widget/info_form.dart';
 
 abstract class Routes {
   static const splashPage = '/';
@@ -28,6 +30,8 @@ abstract class Routes {
   static const commentsScreen = '/comments-screen';
   static const aroundMePage = '/around-me-page';
   static const profilePage = '/profile-page';
+  static const conversationPage = '/conversation-page';
+  static const infoForm = '/info-form';
   static const all = {
     splashPage,
     signInPage,
@@ -37,6 +41,8 @@ abstract class Routes {
     commentsScreen,
     aroundMePage,
     profilePage,
+    conversationPage,
+    infoForm,
   };
 }
 
@@ -113,6 +119,26 @@ class Router extends RouterBase {
               ProfilePage(key: typedArgs.key, userInfo: typedArgs.userInfo),
           settings: settings,
         );
+      case Routes.conversationPage:
+        if (hasInvalidArgs<ConversationPageArguments>(args)) {
+          return misTypedArgsRoute<ConversationPageArguments>(args);
+        }
+        final typedArgs =
+            args as ConversationPageArguments ?? ConversationPageArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => ConversationPage(
+              currentUserID: typedArgs.currentUserID,
+              name: typedArgs.name,
+              id: typedArgs.id,
+              image: typedArgs.image,
+              conversationID: typedArgs.conversationID),
+          settings: settings,
+        );
+      case Routes.infoForm:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => InfoForm(),
+          settings: settings,
+        );
       default:
         return unknownRoutePage(settings.name);
     }
@@ -143,6 +169,21 @@ class ProfilePageArguments {
   final Key key;
   final UserInfo userInfo;
   ProfilePageArguments({this.key, this.userInfo});
+}
+
+//ConversationPage arguments holder class
+class ConversationPageArguments {
+  final String currentUserID;
+  final String name;
+  final String id;
+  final String image;
+  final String conversationID;
+  ConversationPageArguments(
+      {this.currentUserID,
+      this.name,
+      this.id,
+      this.image,
+      this.conversationID});
 }
 
 // *************************************************************************
@@ -189,4 +230,23 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
         Routes.profilePage,
         arguments: ProfilePageArguments(key: key, userInfo: userInfo),
       );
+
+  Future pushConversationPage({
+    String currentUserID,
+    String name,
+    String id,
+    String image,
+    String conversationID,
+  }) =>
+      pushNamed(
+        Routes.conversationPage,
+        arguments: ConversationPageArguments(
+            currentUserID: currentUserID,
+            name: name,
+            id: id,
+            image: image,
+            conversationID: conversationID),
+      );
+
+  Future pushInfoForm() => pushNamed(Routes.infoForm);
 }
