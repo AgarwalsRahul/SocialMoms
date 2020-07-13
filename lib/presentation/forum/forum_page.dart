@@ -167,6 +167,7 @@ class _AllForumsState extends State<AllForums> {
           return Flushbar(
             message: snapshot.error.toString(),
             duration: Duration(seconds: 3),
+            isDismissible: true,
             backgroundColor: Colors.black,
             icon: Icon(
               Icons.warning,
@@ -185,9 +186,11 @@ class _AllForumsState extends State<AllForums> {
             );
           }
           return ListView.builder(
+            padding: EdgeInsets.all(5.0),
             itemBuilder: (context, i) {
               return Card(
                 elevation: 2.0,
+                shadowColor: Theme.of(context).accentColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -208,13 +211,22 @@ class _AllForumsState extends State<AllForums> {
                               : snapshot.data[i].postOwnerPhotoUrl),
                           radius: 25,
                         ),
-                        Text(snapshot.data[i].postOwnerName),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          snapshot.data[i].postOwnerName,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                     SizedBox(
                       height: 10.0,
                     ),
-                    Text(snapshot.data[i].caption),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(snapshot.data[i].caption),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[

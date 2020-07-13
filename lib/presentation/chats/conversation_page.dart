@@ -149,14 +149,25 @@ class _ConversationPageState extends State<ConversationPage> {
 
   Widget _textMessageContainer(String message, bool isMe, Timestamp timestamp) {
     List<Color> _colors = isMe
-        ? [Colors.blue, Color.fromRGBO(42, 117, 188, 1)]
+        ? [
+            Colors.amber,
+            Colors.amber.shade600,
+          ]
         : [Color.fromRGBO(40, 39, 39, 1), Color.fromRGBO(30, 30, 30, 1)];
     return Container(
       height: _deviceHeight * 0.08 + (message.length / 20 * 5.0),
       width: _deviceWidth * 0.75,
       padding: EdgeInsets.symmetric(horizontal: 10.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
+        borderRadius: isMe
+            ? BorderRadius.only(
+                bottomRight: Radius.circular(10.0),
+                bottomLeft: Radius.circular(10.0),
+                topLeft: Radius.circular(10.0))
+            : BorderRadius.only(
+                bottomRight: Radius.circular(10.0),
+                bottomLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0)),
         gradient: LinearGradient(
           colors: _colors,
           begin: Alignment.bottomLeft,
@@ -173,8 +184,11 @@ class _ConversationPageState extends State<ConversationPage> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(message),
-          Text(timeago.format(timestamp.toDate()),
-              style: TextStyle(color: Colors.white54, fontSize: 15.0)),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Text(timeago.format(timestamp.toDate()),
+                style: TextStyle(color: Colors.white54, fontSize: 15.0)),
+          ),
         ],
       ),
     );

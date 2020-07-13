@@ -113,12 +113,12 @@ class FirebaseProvider {
     return snapshot.documents;
   }
 
-  Future<List<DocumentSnapshot>> fetchPostLikeDetails(
-      DocumentReference reference) async {
-    print("REFERENCE : ${reference.path}");
-    QuerySnapshot snapshot = await reference.collection("likes").getDocuments();
-    return snapshot.documents;
-  }
+  // Future<List<DocumentSnapshot>> fetchPostLikeDetails(
+  //     DocumentReference reference) async {
+  //   print("REFERENCE : ${reference.path}");
+  //   QuerySnapshot snapshot = await reference.collection("likes").getDocuments();
+  //   return snapshot.documents;
+  // }
 
   Future<bool> checkIfUserLikedOrNot(DocumentReference reference) async {
     final user = await getIt<AuthFacade>().getSignedInUser();
@@ -163,7 +163,7 @@ class FirebaseProvider {
         list.add(userInfo);
       }
     }
-    print(list);
+    // print(list);
     return list;
   }
 
@@ -181,7 +181,7 @@ class FirebaseProvider {
     for (var i = 0; i < ids.length; i++) {
       final userInfoDoc =
           await ids[i].reference.collection('info').getDocuments();
-      print(userInfoDoc);
+      // print(userInfoDoc);
       list.add(userInfoDoc.documents
           .map((docSnap) => InfoDTO.fromFirestore(docSnap).toDomain())
           .toList()[0]);
@@ -202,13 +202,14 @@ class FirebaseProvider {
     final List<u.UserInfo> list = [];
     // print(ids);
     for (var i = 0; i < ids.length; i++) {
-      final userInfoDoc =
-          await ids[i].reference.collection('info').getDocuments();
-      print(userInfoDoc);
-      list.add(userInfoDoc.documents
-          .where((doc) => doc.data['expertOrNot'] == true)
-          .map((docSnap) => InfoDTO.fromFirestore(docSnap).toDomain())
-          .toList()[0]);
+      final userInfoDoc = await ids[i]
+          .reference
+          .collection('info')
+          .document(ids[i].documentID)
+          .get();
+      if (userInfoDoc.data['expertOrNot'] == true) {
+        list.add(InfoDTO.fromFirestore(userInfoDoc).toDomain());
+      }
     }
     return list;
   }

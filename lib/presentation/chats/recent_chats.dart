@@ -22,49 +22,60 @@ class RecentChats extends StatelessWidget {
               snapshot.data.removeWhere((data) => data.timestamp == null);
               return snapshot.data.length >= 0
                   ? Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 5.0),
                       child: ListView.builder(
                           itemBuilder: (ctx, index) {
-                            return ListTile(
-                              onTap: () async {
-                                await DBService.instance.updateChattingWith(
-                                    snapshot.data[index].id);
-                                final currentUserid =
-                                    await DBService.instance.currentUserId();
-                                ExtendedNavigator.of(ctx)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return ConversationPage(
-                                    conversationID:
-                                        snapshot.data[index].conversationID,
-                                    id: snapshot.data[index].id,
-                                    image: snapshot.data[index].image,
-                                    name: snapshot.data[index].name,
-                                    currentUserID: currentUserid,
-                                  );
-                                }));
-                              },
-                              title: Text(snapshot.data[index].name),
-                              leading: Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      snapshot.data[index].image == ''
-                                          ? 'https://cdn0.iconfinder.com/data/icons/occupation-002/64/programmer-programming-occupation-avatar-512.png'
-                                          : snapshot.data[index].image,
+                            return Card(
+                              elevation: 2.0,
+                              color: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0)),
+                              shadowColor: Colors.blueAccent,
+                              borderOnForeground: true,
+                              child: ListTile(
+                                onTap: () async {
+                                  await DBService.instance.updateChattingWith(
+                                      snapshot.data[index].id);
+                                  final currentUserid =
+                                      await DBService.instance.currentUserId();
+                                  ExtendedNavigator.of(ctx).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return ConversationPage(
+                                      conversationID:
+                                          snapshot.data[index].conversationID,
+                                      id: snapshot.data[index].id,
+                                      image: snapshot.data[index].image,
+                                      name: snapshot.data[index].name,
+                                      currentUserID: currentUserid,
+                                    );
+                                  }));
+                                },
+                                title: Text(snapshot.data[index].name),
+                                leading: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        snapshot.data[index].image == ''
+                                            ? 'https://cdn0.iconfinder.com/data/icons/occupation-002/64/programmer-programming-occupation-avatar-512.png'
+                                            : snapshot.data[index].image,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              subtitle: Text(
+                                subtitle: Text(
                                   snapshot.data[index].type == MessageType.Text
                                       ? snapshot.data[index].lastMessage
-                                      : 'Attachment: Image'),
-                              trailing: RecentChatTrailingWidget(
-                                  snapshot.data[index]),
+                                      : 'Attachment: Image',
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                trailing: RecentChatTrailingWidget(
+                                    snapshot.data[index]),
+                              ),
                             );
                           },
                           itemCount: snapshot.data.length),
@@ -79,8 +90,8 @@ class RecentChats extends StatelessWidget {
                         ),
                       ),
                     );
-            } else {
-              return Center(child: CircularProgressIndicator());
+            } else if (!snapshot.hasData) {
+              return Center(child: Text('No Conversation Yet!'));
             }
           }),
     );

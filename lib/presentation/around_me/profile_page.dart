@@ -59,15 +59,28 @@ class ProfilePage extends StatelessWidget {
         SizedBox(height: 15),
         Text(
           userInfo.userName.getOrCrash(),
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 15),
-        Text(
-          userInfo.shortBio.getOrCrash(),
-          style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
-              fontSize: 12,
-              fontWeight: FontWeight.w500),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            'A Short Bio about me ...',
+            style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 12,
+                fontWeight: FontWeight.w500),
+          ),
+        ),
+        SizedBox(height: 10),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            userInfo.shortBio.getOrCrash(),
+            style: TextStyle(
+                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+          ),
         ),
         SizedBox(height: 10),
       ],
@@ -81,6 +94,9 @@ class ProfilePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                color: Colors.white,
                 onPressed: () {},
                 child: Text(
                   'NOT INTERESTED',
@@ -92,6 +108,9 @@ class ProfilePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 )),
             FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                color: Colors.white,
                 onPressed: () async {
                   final currentUserId =
                       await DBService.instance.currentUserId();
