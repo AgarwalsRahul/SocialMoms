@@ -74,6 +74,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   if (input.isEmpty) {
                     return "Please enter comment";
                   }
+                  return null;
                 },
                 controller: _commentController,
                 decoration: InputDecoration(

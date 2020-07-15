@@ -82,14 +82,13 @@ class FirebaseProvider {
   Future<List<Post>> retrievePosts() async {
     // fetchSearchPosts(updatedList);
     final updatedList = await _post();
-    print("UPDATED LIST LENGTH : ${updatedList.length}");
+
     return updatedList.map((doc) => Post.fromMap(doc.data)).toList();
   }
 
   Future<List<Post>> retrieveGirlTalkPosts() async {
     final updatedList = await _post();
-    // fetchSearchPosts(updatedList);
-    print("UPDATED LIST LENGTH : ${updatedList.length}");
+
     return updatedList
         .where((element) => element.data['type'] == 'Girl Talk')
         .map((doc) => Post.fromMap(doc.data))
@@ -98,8 +97,7 @@ class FirebaseProvider {
 
   Future<List<Post>> retrieveRelationshipPosts() async {
     final updatedList = await _post();
-    // fetchSearchPosts(updatedList);
-    print("UPDATED LIST LENGTH : ${updatedList.length}");
+
     return updatedList
         .where((element) => element.data['type'] == 'Relationship')
         .map((doc) => Post.fromMap(doc.data))
@@ -115,7 +113,7 @@ class FirebaseProvider {
 
   // Future<List<DocumentSnapshot>> fetchPostLikeDetails(
   //     DocumentReference reference) async {
-  //   print("REFERENCE : ${reference.path}");
+  //
   //   QuerySnapshot snapshot = await reference.collection("likes").getDocuments();
   //   return snapshot.documents;
   // }
@@ -126,7 +124,6 @@ class FirebaseProvider {
         () => throw NotAuthenticatedError(), (user) => user.id.getOrCrash());
     DocumentSnapshot snapshot =
         await reference.collection("likes").document(id).get();
-    print('DOC ID : ${snapshot.reference.path}');
     return snapshot.exists;
   }
 
@@ -138,18 +135,16 @@ class FirebaseProvider {
         .document(user.id.getOrCrash())
         .get();
     final city = userData.data['cities'];
-    // print(user.id.getOrCrash());
     final userDocuments = await _firestore.collection('users').getDocuments();
 
     final ids = userDocuments.documents
         .where((doc) => doc.documentID != user.id.getOrCrash())
         .toList();
-    print(ids[0].data['cities']);
-    // print(ids[0].data['city']);
+
     final filterIds =
         ids.where((element) => element.data['cities'] == city).toList();
     final List<u.UserInfo> list = [];
-    print(filterIds);
+
     for (var i = 0; i < filterIds.length; i++) {
       final userInfoDoc = await filterIds[i]
           .reference
@@ -163,25 +158,25 @@ class FirebaseProvider {
         list.add(userInfo);
       }
     }
-    // print(list);
+
     return list;
   }
 
   Future<List<u.UserInfo>> fetchAllUsers() async {
     final userOption = await getIt<AuthFacade>().getSignedInUser();
     final user = userOption.getOrElse(() => throw NotAuthenticatedError());
-    // print(user.id.getOrCrash());
+
     final userDocuments = await _firestore.collection('users').getDocuments();
 
     final ids = userDocuments.documents
         .where((doc) => doc.documentID != user.id.getOrCrash())
         .toList();
     final List<u.UserInfo> list = [];
-    // print(ids);
+
     for (var i = 0; i < ids.length; i++) {
       final userInfoDoc =
           await ids[i].reference.collection('info').getDocuments();
-      // print(userInfoDoc);
+
       list.add(userInfoDoc.documents
           .map((docSnap) => InfoDTO.fromFirestore(docSnap).toDomain())
           .toList()[0]);
@@ -192,15 +187,15 @@ class FirebaseProvider {
   Future<List<u.UserInfo>> fetchExpertUsers() async {
     final userOption = await getIt<AuthFacade>().getSignedInUser();
     final user = userOption.getOrElse(() => throw NotAuthenticatedError());
-    // print(user.id.getOrCrash());
+
     final userDocuments = await _firestore.collection('users').getDocuments();
 
     final ids = userDocuments.documents
         .where((doc) => doc.documentID != user.id.getOrCrash())
         .toList();
-    // print(ids);
+
     final List<u.UserInfo> list = [];
-    // print(ids);
+
     for (var i = 0; i < ids.length; i++) {
       final userInfoDoc = await ids[i]
           .reference

@@ -3,7 +3,6 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/info/info.dart';
-import '../../provider/firebase_provider.dart';
 import 'profile_page.dart';
 
 class AroundMePage extends StatelessWidget {
@@ -36,7 +35,7 @@ class AroundMePage extends StatelessWidget {
                 );
               } else if (snapshot.hasError) {
                 return Flushbar(
-                  message: snapshot.error.toString(),
+                  message: 'Something went wrong ❗',
                   duration: Duration(seconds: 3),
                   backgroundColor: Colors.black,
                   icon: Icon(

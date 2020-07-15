@@ -35,6 +35,7 @@ class _UserProfileFormState extends State<UserProfileForm> {
                   unableToUpdate: (_) => 'Unable to update',
                   cancelledByUser: (_) => 'Cancelled'),
               backgroundColor: Colors.black,
+              duration: Duration(seconds: 4),
               icon: Icon(
                 Icons.warning,
                 size: 28.0,

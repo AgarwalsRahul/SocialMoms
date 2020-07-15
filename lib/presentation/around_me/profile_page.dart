@@ -49,7 +49,7 @@ class ProfilePage extends StatelessWidget {
                     : userInfo.imageUrl)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withOpacity(0.6),
                 blurRadius: 20,
                 spreadRadius: 1,
               ),
@@ -96,7 +96,7 @@ class ProfilePage extends StatelessWidget {
             FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
-                color: Colors.white,
+                // color: Colors.white,
                 onPressed: () {},
                 child: Text(
                   'NOT INTERESTED',
@@ -110,7 +110,7 @@ class ProfilePage extends StatelessWidget {
             FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
-                color: Colors.white,
+                // color: Colors.white,
                 onPressed: () async {
                   final currentUserId =
                       await DBService.instance.currentUserId();

@@ -52,9 +52,6 @@ class _HomePageState extends State<HomePage> {
             future: FirebaseProvider().fetchAroundMeUsersInfo(),
             appBar: true,
           ),
-          Container(
-              // color: Colors.white,
-              ),
           Moms(),
         ],
       ),
@@ -78,10 +75,6 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               title: Text('Around Me'),
               icon: Icon(Icons.near_me),
-            ),
-            BottomNavigationBarItem(
-              title: Text('Notifications'),
-              icon: Icon(Icons.notifications),
             ),
             BottomNavigationBarItem(
               title: Text('Moms'),

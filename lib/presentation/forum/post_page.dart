@@ -11,6 +11,7 @@ class _PostPageState extends State<PostPage> {
   String _caption;
   String _type;
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -24,21 +25,26 @@ class _PostPageState extends State<PostPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            TextFormField(
-              autocorrect: false,
-              decoration: InputDecoration(
-                  labelText: 'Caption', prefixIcon: Icon(Icons.closed_caption)),
-              onChanged: (value) {
-                setState(() {
-                  _caption = value;
-                });
-              },
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Cannot be empty';
-                }
-                return null;
-              },
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: TextFormField(
+                autocorrect: false,
+                decoration: InputDecoration(
+                    labelText: 'Caption',
+                    prefixIcon: Icon(Icons.closed_caption)),
+                onChanged: (value) {
+                  setState(() {
+                    _caption = value;
+                  });
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Cannot be empty';
+                  }
+                  return null;
+                },
+              ),
             ),
             DropdownButtonFormField(
               icon: Icon(Icons.arrow_drop_down_circle),
@@ -65,19 +71,30 @@ class _PostPageState extends State<PostPage> {
                 });
               },
             ),
-            FlatButton(
-              onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  await FirebaseProvider().addPostToDb(_caption, _type);
-                  ExtendedNavigator.of(context).pop();
-                }
-              },
-              child: Text(
-                'SUBMIT',
-                style: TextStyle(color: Colors.black),
-              ),
-              color: Theme.of(context).accentColor,
+            SizedBox(
+              height: 5.0,
             ),
+            _isLoading
+                ? CircularProgressIndicator()
+                : FlatButton(
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await FirebaseProvider().addPostToDb(_caption, _type);
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        ExtendedNavigator.of(context).pop();
+                      }
+                    },
+                    child: Text(
+                      'POST',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    color: Theme.of(context).accentColor,
+                  ),
           ],
         ),
       ),
