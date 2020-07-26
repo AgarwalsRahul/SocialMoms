@@ -146,6 +146,23 @@ class _CommentsScreenState extends State<CommentsScreen> {
     );
   }
 
+  CircleAvatar _avatar(DocumentSnapshot snapshot) {
+    try {
+      return CircleAvatar(
+        backgroundImage: NetworkImage(snapshot.data['ownerPhotoUrl'] == ""
+            ? 'https://cdn0.iconfinder.com/data/icons/occupation-002/64/programmer-programming-occupation-avatar-512.png'
+            : snapshot.data['ownerPhotoUrl']),
+        radius: 20,
+      );
+    } catch (_) {
+      return CircleAvatar(
+        backgroundImage: NetworkImage(
+            'https://cdn0.iconfinder.com/data/icons/occupation-002/64/programmer-programming-occupation-avatar-512.png'),
+        radius: 20,
+      );
+    }
+  }
+
   Widget commentItem(DocumentSnapshot snapshot) {
     //   var time;
     //   List<String> dateAndTime;
@@ -164,12 +181,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(snapshot.data['ownerPhotoUrl'] == ""
-                  ? 'https://cdn0.iconfinder.com/data/icons/occupation-002/64/programmer-programming-occupation-avatar-512.png'
-                  : snapshot.data['ownerPhotoUrl']),
-              radius: 20,
-            ),
+            child: _avatar(snapshot),
           ),
           SizedBox(
             width: 15.0,

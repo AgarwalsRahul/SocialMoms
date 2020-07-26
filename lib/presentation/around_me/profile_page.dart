@@ -97,7 +97,9 @@ class ProfilePage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
                 // color: Colors.white,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
                 child: Text(
                   'NOT INTERESTED',
                   style: TextStyle(

@@ -18,6 +18,19 @@ class FirebaseProvider {
   Post post;
   Like like;
   Comment comment;
+  String currentUserId;
+
+  FirebaseProvider() {
+    setCurrentUserId();
+  }
+
+  void setCurrentUserId() async {
+    final user = await getIt<AuthFacade>().getSignedInUser();
+
+    final id = user.fold(
+        () => throw NotAuthenticatedError(), (user) => user.id.getOrCrash());
+    currentUserId = id;
+  }
 
   Future<u.UserInfo> getUserInfo() async {
     final userDoc = await _firestore.userDocument();
@@ -37,6 +50,7 @@ class FirebaseProvider {
     final currentUser = await getUserInfo();
     post = Post(
         id: UniqueId().getOrCrash(),
+        postLikes: [],
         currentUserUid: id,
         caption: caption,
         type: type,
@@ -113,19 +127,34 @@ class FirebaseProvider {
 
   // Future<List<DocumentSnapshot>> fetchPostLikeDetails(
   //     DocumentReference reference) async {
-  //
+
   //   QuerySnapshot snapshot = await reference.collection("likes").getDocuments();
   //   return snapshot.documents;
   // }
 
-  Future<bool> checkIfUserLikedOrNot(DocumentReference reference) async {
-    final user = await getIt<AuthFacade>().getSignedInUser();
-    final id = user.fold(
-        () => throw NotAuthenticatedError(), (user) => user.id.getOrCrash());
-    DocumentSnapshot snapshot =
-        await reference.collection("likes").document(id).get();
-    return snapshot.exists;
+  Future<void> addLikesIntoDb(Post post) async {
+    // final user = await getIt<AuthFacade>().getSignedInUser();
+    // final userId = user.fold(
+    //     () => throw NotAuthenticatedError(), (user) => user.id.getOrCrash());
+    await _firestore
+        .collection('users')
+        .document(post.currentUserUid)
+        .collection('posts')
+        .document(post.id)
+        .setData({'postLikes': post.postLikes}, merge: true);
   }
+
+  // Future<bool> checkIfUserLikedOrNot(String postId) async {
+  //   final user = await getIt<AuthFacade>().getSignedInUser();
+  //   final id = user.fold(
+  //       () => throw NotAuthenticatedError(), (user) => user.id.getOrCrash());
+  //   DocumentSnapshot snapshot =
+  //       await _firestore.collection("Likes").document(id).get();
+  //   final List<String> likes =
+  //       snapshot.data['postId'] == null ? [] : snapshot.data['postId'];
+  //   print(likes);
+  //   return likes.contains(postId);
+  // }
 
   Future<List<u.UserInfo>> fetchAroundMeUsersInfo() async {
     final userOption = await getIt<AuthFacade>().getSignedInUser();
@@ -176,10 +205,10 @@ class FirebaseProvider {
     for (var i = 0; i < ids.length; i++) {
       final userInfoDoc =
           await ids[i].reference.collection('info').getDocuments();
-
-      list.add(userInfoDoc.documents
-          .map((docSnap) => InfoDTO.fromFirestore(docSnap).toDomain())
-          .toList()[0]);
+      if (userInfoDoc.documents != null)
+        list.add(userInfoDoc.documents
+            .map((docSnap) => InfoDTO.fromFirestore(docSnap).toDomain())
+            .toList()[0]);
     }
     return list;
   }
@@ -202,7 +231,7 @@ class FirebaseProvider {
           .collection('info')
           .document(ids[i].documentID)
           .get();
-      if (userInfoDoc.data['expertOrNot'] == true) {
+      if (userInfoDoc.data['expertOrNot'] == true && userInfoDoc.data != null) {
         list.add(InfoDTO.fromFirestore(userInfoDoc).toDomain());
       }
     }

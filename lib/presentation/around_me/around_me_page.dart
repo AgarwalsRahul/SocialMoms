@@ -63,21 +63,19 @@ class AroundMePage extends StatelessWidget {
                     mainAxisSpacing: 10,
                   ),
                   itemBuilder: (context, i) {
-                    return Card(
-                      elevation: 2.0,
-                      shadowColor: Colors.amber,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: GridTile(
-                          child: GestureDetector(
-                            onTap: () {
-                              ExtendedNavigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return ProfilePage(userInfo: snapshot.data[i]);
-                              }));
-                            },
+                    return InkWell(
+                      onTap: () => ExtendedNavigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return ProfilePage(userInfo: snapshot.data[i]);
+                      })),
+                      child: Card(
+                        elevation: 2.0,
+                        shadowColor: Colors.amber,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: GridTile(
                             child: FadeInImage(
                               placeholder:
                                   AssetImage('assets/images/placeholder.png'),
@@ -87,15 +85,15 @@ class AroundMePage extends StatelessWidget {
                                   : snapshot.data[i].imageUrl),
                               fit: BoxFit.cover,
                             ),
-                          ),
-                          footer: GridTileBar(
-                            backgroundColor: Theme.of(context).accentColor,
-                            title: Text(
-                              snapshot.data[i].userName.getOrCrash(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                            footer: GridTileBar(
+                              backgroundColor: Theme.of(context).accentColor,
+                              title: Text(
+                                snapshot.data[i].userName.getOrCrash(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),

@@ -9,6 +9,7 @@ class Post {
   String postOwnerName;
   String postOwnerPhotoUrl;
   String type;
+  List<String> postLikes;
 
   Post(
       {this.currentUserUid,
@@ -16,6 +17,7 @@ class Post {
       this.caption,
       this.type,
       this.time,
+      this.postLikes,
       this.postOwnerName,
       this.postOwnerPhotoUrl});
 
@@ -28,10 +30,13 @@ class Post {
     data['time'] = post.time;
     data['postOwnerName'] = post.postOwnerName;
     data['postOwnerPhotoUrl'] = post.postOwnerPhotoUrl;
+    data['postLikes'] = post.postLikes;
     return data;
   }
 
   Post.fromMap(Map<String, dynamic> mapData) {
+    // final List<String> postLike =
+    //     mapData['postLikes'].map((doc) => doc.toString()).toList();
     this.id = mapData['id'];
     this.currentUserUid = mapData['ownerUid'];
     this.caption = mapData['caption'];
@@ -39,5 +44,6 @@ class Post {
     this.time = FieldValue.serverTimestamp();
     this.postOwnerName = mapData['postOwnerName'];
     this.postOwnerPhotoUrl = mapData['postOwnerPhotoUrl'];
+    this.postLikes = List.from(mapData['postLikes']);
   }
 }
